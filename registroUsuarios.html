@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <h1 align="center">Registro de Usuarios</h1>
+</head>
+<style>
+    body{
+	padding-top:20px;
+	max-width: 100%;
+	margin: auto;
+	font:  16px Sans-serif;
+    background-color: #AEC6CF;
+
+    }
+    p{
+        font:16px Arial;
+    }
+    table{
+	text-align:left;
+	border: 2px solid black;
+	margin: auto;
+	background-color:#b2d8b2;
+    }
+    input[type=text],input[type=date],input[type=password],
+    input[type=email],select
+    {
+        width:100%;
+        font: 16px Sans-serif;
+        height:20px;
+    }
+    input[type=submit]{
+        font: 16px Sans-serif;
+        height: 20px;
+    }
+    td
+    {
+    font: bold 16px Arial;
+    padding: 10px;
+    }
+    .hidden{
+        display: none;
+    }
+    div.hidden{
+        display: none;
+    }
+</style>
+<script>
+    function validateUsername(){
+      var user = document.getElementById('usuario').value;
+      if (/[^a-zA-Z0-9]/.test(user) == true){
+        alert('el login usuario no debe tener caracteres extraños.');
+        return false;
+      }
+      return true;
+    }
+
+    function validatePassword(){
+        var psw = document.getElementById('password').value;
+        if (/^(?=.*\d)(?=.*[a-z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8}$/.test(psw) == false){
+            alert('La contraseña debe contener al menos un digito, una minúscula, una mayúscula, un caracter especial, ningún espacio en blanco y tener una longitud de al menos 8 caracteres.');
+        }
+
+        return true;
+    }
+
+    function show(radio){
+        var enfermedadC = document.getElementById('enfermedad');
+        if(radio == '1'){
+            enfermedadesContagiosas.classList.remove("hidden");
+        }
+        else{
+            enfermedadesContagiosas.classList.add("hidden");
+        }
+    }
+
+    function show2(radio){
+        var enfermedadC = document.getElementById('enfermedadC');
+        if(radio == '1'){
+            cuales.classList.remove("hidden");
+            lblcuales.classList.remove("hidden");
+        }
+        else{
+            cuales.classList.add("hidden");
+            lblcuales.classList.add("hidden");
+        }
+    }
+    function getEdad(){
+        var fechaInput = document.getElementById("fecha");
+        var edaD = document.getElementById("edad3");
+
+        fechaInput.addEventListener("change",function(){
+            var fechaSel = fechaInput.value;
+            var fecha = new Date(fechaSel);
+            var fechaActual = new Date();
+            var anio = fecha.getFullYear();
+            var anio2 = fechaActual.getFullYear();
+            var edad = anio2 - anio;
+            edaD.textContent = edad.toString()+" años";
+        })
+    }
+
+</script>
+<body>
+    <form name="registro" action="registroUsuarios.html" method="post"></form>
+    <table>
+        <tr>
+            <td colspan="2" align="center"><h2>Datos de usuario</h2></td>
+        </tr>
+        <tr>
+            <td><label for="nombre">Nombre:</label></td>
+            <td><input type="text" id="nombre" required><br><br></td>
+        </tr>
+        <tr>
+            <td><label for="apellido">Apellido:</label></td>
+            <td><input type="text" id="apellido" required><br><br></td>
+        </tr>
+        <tr>
+            <td><label for="fecha">Fecha de Nacimiento:</label></td>
+            <td><input type="date" id="fecha" oninput="getEdad()"required ><br><br></td>
+        </tr>
+        <tr>
+            <td><label for="edad" id="lbledad">Edad:</label></td>
+            <td><p id="edad3"></p></td>
+        </tr>
+        <tr>
+            <td><label for="correo">Correo:</label></td>
+            <td><input type="email" id="correo" required><br><br></td>
+        </tr>
+        <tr>
+            <td><label for="usuario">Usuario:</label></td>
+            <td><input type="text" id="usuario" oninput="validateUsername(this)"required><br><br></td>
+        </tr>
+        <tr>
+            <td><label for="password">Contraseña:</label></td>
+            <td><input type="password" id="password" required><br><br></td>
+        </tr>
+        <tr>
+            <td><label for="password2">Confirmar contraseña:</label></td>
+            <td><input type="password" id="password2" required></td>
+        </tr>
+        <tr>
+            <td>
+                <br><br> 
+                <section>
+                    ¿Ha sufrido enfermedades?<br>
+                    <label for="enfermedad">Sí</label>
+                    <input type="radio" name="sí"id="enfermedad" value="1" onchange="show(this.value)"><br><br>
+                    <div id="enfermedadesContagiosas" class="hidden">
+                        ¿Enfermedades contagiosas?<br>
+                        <label for="enfermedadC">Sí</label>
+                        <input type="radio" id="enfermedadC" name="sí2" value="1" onchange="show2(this.value)"><br><br>
+                        <label for="cuales" id="lblcuales"class="hidden">¿Cuáles?</label><br><br>
+                        <textarea rows="5" cols="50" id="cuales" class="hidden"></textarea>
+                    </div>
+            
+                </section>
+            </td>
+        </tr>
+        <tr><td align="right"><br><input type="submit" value="enviar" onclick="validatePassword()"></td></tr>
+    </table> 
+
+
+    
+</body>
+</html>
