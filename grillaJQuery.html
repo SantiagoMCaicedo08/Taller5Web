@@ -5,14 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script>
-        $(document).ready(function(){
-            console.log("jQuery cargado y listo.");
-        });
-    </script>
+
 </head>
+<style>
+    h2,h3{
+        font-family: helvetica;
+    }
+    table{
+        font-family: helvetica, arial;
+        border-collapse:collapse;
+        width: 100%;
+    }
+    td,th{
+        border: 1px solid #dddddd;
+        padding:8px;
+    }
+    th{
+        background-color: rgb(117, 226, 197);
+    }
+    tr:nth-child(even){
+        background-color: #bcf0e7;
+    }
+    tr:nth-child(odd){
+        background-color: #5dc2b6;
+    }
+</style>
 
 <body>
+    <h2>Grilla JQuery</h2><br>
+    <h3>Filtrado:</h3>
+    <input type="text" id = "myInput" placeholder= "Search..."><br><br>
+    <table id="myTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th>Website</th>
+                <th>Company</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
     
+        <script>
+            var tabla = "";
+            $.ajax({
+                url: ' https://jsonplaceholder.typicode.com/users',
+                dataType: 'json',
+                success: function(data){
+                    //Object.keys(data[0]).forEach(function(key){
+                    //    console.log(key);                    });
+                    data.forEach(function(user){
+                        tabla += "<tr>";
+                        tabla += "<td>" + user.id.toString() + "</td>";
+                        tabla += "<td>" + user.name + "</td>";
+                        tabla += "<td>" + user.username + "</td>";
+                        tabla += "<td>" + user.email + "</td>";
+                        tabla += "<td>" + user.address.street + "," + user.address.suite + "," + user.address.city + "</td>";
+                        tabla += "<td>" + user.phone + "</td>";
+                        tabla += "<td>" + user.website + "</td>";
+                        tabla += "<td>" + user.company.name + "</td>";                           
+                        tabla += "</tr>";
+                    });
+                    $('#myTable tbody').html(tabla);
+                    }
+                    
+            });
+            $(document).ready(function(){
+                $('#myInput').on("keyup",function(){
+                    var value = $(this).val().toLowerCase();
+                    $('#myTable tr').filter(function(){
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+            });
+            
+        </script>
 </body>
 </html>
